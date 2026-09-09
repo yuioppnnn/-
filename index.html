@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>就活カレンダー</title>
+<meta name="description" content="就職活動の予定（エントリー・選考・面接など）を管理するカレンダーアプリ">
+<meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="就活カレンダー">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="app-header">
+    <h1>就活カレンダー</h1>
+    <div class="header-actions">
+      <button id="btn-menu" class="icon-btn" title="メニュー" aria-label="メニュー">⋮</button>
+    </div>
+  </header>
+
+  <nav class="month-nav">
+    <button id="btn-prev-month" class="icon-btn" aria-label="前の月">‹</button>
+    <button id="btn-today" class="today-btn">今日</button>
+    <h2 id="month-label">2026年9月</h2>
+    <button id="btn-next-month" class="icon-btn" aria-label="次の月">›</button>
+  </nav>
+
+  <div class="weekday-row" id="weekday-row"></div>
+
+  <div class="calendar-grid" id="calendar-grid"></div>
+
+  <section class="upcoming-section">
+    <h3>今後の予定</h3>
+    <ul id="upcoming-list" class="upcoming-list"></ul>
+    <p id="upcoming-empty" class="empty-msg" hidden>予定はまだありません。日付をタップして追加しましょう。</p>
+  </section>
+
+  <button id="btn-add" class="fab" title="予定を追加" aria-label="予定を追加">＋</button>
+</div>
+
+<!-- 日別の予定一覧 -->
+<div id="day-modal" class="modal-overlay" hidden>
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="day-modal-title">日付</h3>
+      <button class="icon-btn modal-close" data-close="day-modal" aria-label="閉じる">×</button>
+    </div>
+    <ul id="day-event-list" class="day-event-list"></ul>
+    <p id="day-empty-msg" class="empty-msg" hidden>この日の予定はありません。</p>
+    <button id="btn-add-in-day" class="primary-btn">この日に予定を追加</button>
+  </div>
+</div>
+
+<!-- 予定追加・編集フォーム -->
+<div id="event-modal" class="modal-overlay" hidden>
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="event-modal-title">予定を追加</h3>
+      <button class="icon-btn modal-close" data-close="event-modal" aria-label="閉じる">×</button>
+    </div>
+    <form id="event-form">
+      <label class="field">
+        <span>企業名・団体名</span>
+        <input type="text" id="input-company" placeholder="例：〇〇株式会社" required>
+      </label>
+      <label class="field">
+        <span>種別</span>
+        <select id="input-type"></select>
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span>日付</span>
+          <input type="date" id="input-date" required>
+        </label>
+        <label class="field">
+          <span>時刻（任意）</span>
+          <input type="time" id="input-time">
+        </label>
+      </div>
+      <label class="field">
+        <span>メモ（任意）</span>
+        <textarea id="input-memo" rows="3" placeholder="持ち物、URL、注意点など"></textarea>
+      </label>
+      <div class="form-actions">
+        <button type="button" id="btn-delete-event" class="danger-btn" hidden>削除</button>
+        <div class="form-actions-right">
+          <button type="button" class="secondary-btn" data-close="event-modal">キャンセル</button>
+          <button type="submit" class="primary-btn">保存</button>
+        </div>
+      </div>
+      <input type="hidden" id="input-id">
+    </form>
+  </div>
+</div>
+
+<!-- メニュー（エクスポート／インポート） -->
+<div id="menu-modal" class="modal-overlay" hidden>
+  <div class="modal">
+    <div class="modal-header">
+      <h3>メニュー</h3>
+      <button class="icon-btn modal-close" data-close="menu-modal" aria-label="閉じる">×</button>
+    </div>
+    <div class="menu-list">
+      <button id="btn-export" class="secondary-btn full-width">予定をバックアップ（JSONで書き出し）</button>
+      <label class="secondary-btn full-width file-label">
+        予定を読み込み（JSONを取り込み）
+        <input type="file" id="input-import" accept="application/json" hidden>
+      </label>
+      <button id="btn-install" class="primary-btn full-width" hidden>ホーム画面に追加</button>
+    </div>
+    <p class="menu-note">データはこの端末のブラウザ内にのみ保存されます。機種変更・別ブラウザで使う場合はバックアップを書き出し、新しい方で読み込んでください。</p>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
